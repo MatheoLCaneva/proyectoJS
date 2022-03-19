@@ -31,16 +31,20 @@
       <link rel="stylesheet" href="css/owl.carousel.min.css">
       <link rel="stylesheet" href="css/owl.theme.default.min.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+      
       <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-      <script src="./js/main.js"></script>
+
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      
    </head>
    <body>
       <!-- header section start -->
       <!-- header section end -->
       <!-- computers section start -->
       <div class="computers_section layout_padding">
-         <div class="container">
+         <div class="container" id="principio">
             <h1 class="computers_taital">Servicios</h1>
+            <button><i class="fa-solid fa-cart-shopping"></i></button>
          </div>
       </div>
       <div class="computers_section_2">
@@ -53,7 +57,7 @@
                      <div class="computer_text_main">
                         <h6 class="price_text"><a href="#">$1500</a></h6>
                      </div>
-                     <div class="cart_bt_1"><a href="#">Agregar</a></div>
+                     <div class="cart_bt_1 primerProducto"> <button class="botonAgregar tipo1"> Agregar</button></div>
                   </div>
                   <div class="col-md-4">
                      <div class="computer_img"><img src="./img/notebook2.jpg"></div>
@@ -61,7 +65,7 @@
                      <div class="computer_text_main">
                         <h6 class="price_text"><a href="#">$2000</a></h6>
                      </div>
-                     <div class="cart_bt_1"><a href="#">Add To Cart</a></div>
+                     <div class="cart_bt_1 segundoProducto"> <button class="botonAgregar tipo2"> Agregar</button></div>
                   </div>
                   <div class="col-md-4">
                      <div class="computer_img"><img src="./img/codigo4.jpg"></div>
@@ -69,12 +73,13 @@
                      <div class="computer_text_main">
                         <h6 class="price_text"><a href="#">$10000</a></h6>
                      </div>
-                     <div class="cart_bt_1"><a href="#">Add To Cart</a></div>
+                     <div class="cart_bt_1 tercerProducto"> <button class="botonAgregar tipo3"> Agregar</button></div>
                   </div>
                </div>
             </div>
          </div>
       </div>
+
       <!-- computers section end -->
       <!-- footer section start -->
       
@@ -83,6 +88,7 @@
      
       <!-- copyright section end -->
       <!-- Javascript files-->
+      <script src="./js/main.js"></script>
       
    </body>
 </html>
