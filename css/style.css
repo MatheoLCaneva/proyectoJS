@@ -607,7 +607,6 @@ button {
 }
 
 .computers_taital {
-    width: 95%;
     float: left;
     font-size: 40px;
     color: #252424;
@@ -1059,4 +1058,18 @@ button{
     text-align: center;
     padding: 8px 4px;
     margin-top: 5px;
+}
+
+.noMostrar{
+    display: none;
+}
+
+.textoCarrito{
+    margin-left: 14px;
+    font-size: 20px;
+}
+
+.titulos{
+    display: flex;
+    justify-content: space-around;
 }
