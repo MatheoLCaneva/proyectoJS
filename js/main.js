@@ -47,28 +47,89 @@ function agregarProductoCarrito(id) {
         precioTotal += producto.precio;
         localStorage.setItem("Articulos", JSON.stringify(carrito))
         localStorage.setItem("PrecioTotal", precioTotal)
-
         //Agrego el texto confirmando la operacion
-        parrafo = document.querySelector(".textoCarrito")
-        parrafo.innerHTML = "El producto " + producto.articulo + " fue agregado con exito al carrito. <br> El precio total es de $" + precioTotal + "<br> Total de articulos: " + carrito.length
+        agregarBoton(id)
+        eliminarProductoCarrito1("botonEliminar")
+        Swal.fire(
+            'El producto ' + producto.articulo + ' fue agregado con exito',
+            'Precio total: $' + precioTotal,
+            'success'
+        )
+
     }
 
 }
 
-function eliminarProductoCarrito(id) {
+function eliminarProducto(id) {
     const producto = buscarProducto(id);
     if (enCarrito(producto.id)) {
-        const indice = obtenerIndice(carrito, producto);
-        carrito.splice(indice, 1)
-        precioTotal -= producto.precio;
-        localStorage.setItem("Articulos", JSON.stringify(carrito))
-        localStorage.setItem("PrecioTotal", precioTotal)
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
 
-        //texto confirmando la eliminacion
-        parrafo = document.querySelector(".textoCarrito")
-        parrafo.innerHTML = "El producto " + producto.articulo + " fue eliminado del carrito. <br> El precio total es de $" + precioTotal + "<br> Total de articulos: " + carrito.length
+        swalWithBootstrapButtons.fire({
+            title: 'Estas seguro de eliminar ' + producto.articulo + '?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const indice = obtenerIndice(carrito, producto);
+                carrito.splice(indice, 1)
+                precioTotal -= producto.precio;
+                localStorage.setItem("Articulos", JSON.stringify(carrito))
+                localStorage.setItem("PrecioTotal", precioTotal)
+                swalWithBootstrapButtons.fire(
+                    'Producto eliminado: ' + producto.articulo,
+                    'Articulos restantes: ' + carrito.length,
+                    'warning'
+                )
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Eliminacion cancelada',
+                    'Total de articulos: ' + carrito.length, 
+                    'success'
+                )
+            }
+        })
+
+
     }
 }
+
+function eliminarProductoCarrito1(array) {
+    const botonesEliminar = [...document.getElementsByClassName(array)];
+    for (const boton of botonesEliminar) {
+        boton.onclick = () => {
+            if (tieneID(boton) && boton.id == "eliminarBoton0") {
+                eliminarProducto(0)
+                ocultarBoton(0)
+            }
+            if (tieneID(boton) && boton.id == "eliminarBoton1") {
+                eliminarProducto(1)
+                ocultarBoton(1)
+            }
+            if (tieneID(boton) && boton.id == "eliminarBoton2") {
+                eliminarProducto(2)
+                ocultarBoton(2)
+            }
+        }
+    }
+}
+
+function tieneID(elemento) {
+    return typeof elemento.id != "undefined";
+}
+
 
 // devuelve indice de un objeto en el Array, la hice porque indexOf me generaba error
 function obtenerIndice(arr, objeto) {
@@ -96,32 +157,31 @@ function enCarrito(id) {
 
 // funcion la cual los agrega anticipadamente para poder manipularlos
 function agregarBoton(id) {
-    const producto = buscarProducto(id);
-    if (!carrito.includes(producto)) {
-        if (id == 0) {
-            let a = document.querySelector(".primerProducto")
-            let p = document.createElement("button");
-            p.innerHTML = " Eliminar"
-            p.className = "botonEliminar botonEliminarPrimero noMostrar"
-            p.id = "eliminarBoton0"
-            a.append(p)
-        } else if (id == 1) {
-            let a = document.querySelector(".segundoProducto")
-            let p = document.createElement("button");
-            p.innerHTML = " Eliminar"
-            p.className = "botonEliminar botonEliminarSegundo noMostrar"
-            p.id = "eliminarBoton1"
-            a.append(p)
-        } else if (id == 2) {
-            let a = document.querySelector(".tercerProducto")
-            let p = document.createElement("button");
-            p.innerHTML = " Eliminar"
-            p.className = "botonEliminar botonEliminarTercero noMostrar"
-            p.id = "eliminarBoton2"
-            a.append(p)
-        }
+    if (id == 0) {
+        let a = document.querySelector(".primerProducto")
+        let p = document.createElement("button");
+        p.innerHTML = " Eliminar"
+        p.className = "botonEliminar botonEliminarPrimero noMostrar"
+        p.id = "eliminarBoton0"
+        a.append(p)
+    } else if (id == 1) {
+        let a = document.querySelector(".segundoProducto")
+        let p = document.createElement("button");
+        p.innerHTML = " Eliminar"
+        p.className = "botonEliminar botonEliminarSegundo noMostrar"
+        p.id = "eliminarBoton1"
+        a.append(p)
+    } else if (id == 2) {
+        let a = document.querySelector(".tercerProducto")
+        let p = document.createElement("button");
+        p.innerHTML = " Eliminar"
+        p.className = "botonEliminar botonEliminarTercero noMostrar"
+        p.id = "eliminarBoton2"
+        a.append(p)
     }
+    mostrarBoton(id)
 }
+
 
 // funcion para mostrar los botones de eliminar
 function mostrarBoton(id) {
@@ -159,38 +219,36 @@ function pagarCarrito() {
         console.log("Gracias por su compra, el total fue " + precioTotal)
     }
 }
-agregarBoton(0);
-agregarBoton(1);
-agregarBoton(2);
+
+function cargaPrincipal() {
+    if (localStorage.getItem("Articulos") == null) {
+        carrito = []
+
+    } else {
+        const almacenados = JSON.parse(localStorage.getItem("Articulos"));
+        carrito = []
+        for (const objeto of almacenados) {
+            carrito.push(objeto);
+            console.log(objeto.id)
+            let obj = new servicio(objeto)
+            agregarBoton(obj.id)
+            eliminarProductoCarrito1("botonEliminar")
+        }
+        precioTotal = parseFloat(localStorage.getItem("PrecioTotal"))
+    }
+    let titulo = document.getElementById("principio");
+    let parrafo = document.createElement("p");
+    parrafo.innerHTML = " Bienvenido " + localStorage.getItem("Usuario")
+    parrafo.className = "bienvenida"
+    titulo.appendChild(parrafo)
+}
 
 let parrafoCarrito = document.createElement("p");
 parrafoCarrito.innerHTML = ""
 parrafoCarrito.className = "textoCarrito"
 document.body.appendChild(parrafoCarrito)
 
-
-if (localStorage.getItem("Articulos") == null) {
-    carrito = []
-
-} else {
-    const almacenados = JSON.parse(localStorage.getItem("Articulos"));
-    carrito = []
-    for (const objeto of almacenados) {
-        carrito.push(objeto);
-        console.log(objeto.id)
-        let obj = new servicio(objeto)
-        mostrarBoton(obj.id)
-    }
-    precioTotal = parseFloat(localStorage.getItem("PrecioTotal"))
-}
-
-let titulo = document.getElementById("principio");
-let parrafo = document.createElement("p");
-parrafo.innerHTML = " Bienvenido " + localStorage.getItem("Usuario") 
-parrafo.className = "bienvenida"
-titulo.appendChild(parrafo)
-
-
+cargaPrincipal()
 
 //Gestiono cuando se pulsa el boton agregar
 
@@ -200,7 +258,6 @@ let boton3 = document.querySelector(".tipo3");
 
 boton1.onclick = () => {
     agregarProductoCarrito(0)
-    mostrarBoton(0)
 }
 
 boton2.onclick = () => {
@@ -211,23 +268,4 @@ boton2.onclick = () => {
 boton3.onclick = () => {
     agregarProductoCarrito(2)
     mostrarBoton(2)
-}
-
-
-// Gestiono cuando se pulsan los botones eliminar
-let botonEliminar1 = document.querySelector(".botonEliminarPrimero")
-let botonEliminar2 = document.querySelector(".botonEliminarSegundo")
-let botonEliminar3 = document.querySelector(".botonEliminarTercero")
-
-botonEliminar1.onclick = () => {
-    eliminarProductoCarrito(0)
-    ocultarBoton(0)
-}
-botonEliminar2.onclick = () => {
-    eliminarProductoCarrito(1)
-    ocultarBoton(1)
-}
-botonEliminar3.onclick = () => {
-    eliminarProductoCarrito(2)
-    ocultarBoton(2)
 }
