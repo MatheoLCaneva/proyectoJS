@@ -37,7 +37,6 @@ function buscarProducto(id) {
     return producto;
 }
 
-
 function agregarProductoCarrito(id) {
     const producto = buscarProducto(id);
     if (enCarrito(producto.id)) {
@@ -90,6 +89,7 @@ function eliminarProducto(id) {
                     'Articulos restantes: ' + carrito.length,
                     'warning'
                 )
+                ocultarBoton(id)
             } else if (
                 /* Read more about handling dismissals below */
                 result.dismiss === Swal.DismissReason.cancel
@@ -112,15 +112,12 @@ function eliminarProductoCarrito1(array) {
         boton.onclick = () => {
             if (tieneID(boton) && boton.id == "eliminarBoton0") {
                 eliminarProducto(0)
-                ocultarBoton(0)
             }
             if (tieneID(boton) && boton.id == "eliminarBoton1") {
                 eliminarProducto(1)
-                ocultarBoton(1)
             }
             if (tieneID(boton) && boton.id == "eliminarBoton2") {
                 eliminarProducto(2)
-                ocultarBoton(2)
             }
         }
     }
@@ -129,7 +126,6 @@ function eliminarProductoCarrito1(array) {
 function tieneID(elemento) {
     return typeof elemento.id != "undefined";
 }
-
 
 // devuelve indice de un objeto en el Array, la hice porque indexOf me generaba error
 function obtenerIndice(arr, objeto) {
@@ -182,7 +178,6 @@ function agregarBoton(id) {
     mostrarBoton(id)
 }
 
-
 // funcion para mostrar los botones de eliminar
 function mostrarBoton(id) {
     if (id == 0) {
@@ -211,7 +206,6 @@ function ocultarBoton(id) {
     }
 }
 
-
 function pagarCarrito() {
     if (precioTotal == 0) {
         console.log("Carrito vacio, agregue productos y reintente")
@@ -236,11 +230,15 @@ function cargaPrincipal() {
         }
         precioTotal = parseFloat(localStorage.getItem("PrecioTotal"))
     }
-    let titulo = document.getElementById("principio");
-    let parrafo = document.createElement("p");
-    parrafo.innerHTML = " Bienvenido " + localStorage.getItem("Usuario")
-    parrafo.className = "bienvenida"
-    titulo.appendChild(parrafo)
+    Toastify({
+        text: "Bienvenido " + localStorage.getItem("Usuario"),
+        className: "info",
+        duration: 3000,
+        close:true,
+        style: {
+          background: "linear-gradient(to right, #00b09b, #96c93d)",
+        }
+      }).showToast();
 }
 
 let parrafoCarrito = document.createElement("p");
@@ -255,6 +253,11 @@ cargaPrincipal()
 let boton1 = document.querySelector(".tipo1");
 let boton2 = document.querySelector(".tipo2");
 let boton3 = document.querySelector(".tipo3");
+let botonVolver = document.querySelector(".botonVolver")
+
+botonVolver.onclick = () => {
+    location.href = "./index.html"
+}
 
 boton1.onclick = () => {
     agregarProductoCarrito(0)

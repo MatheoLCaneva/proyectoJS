@@ -1,15 +1,3 @@
-// let usuarioRegistrado = "";
-// if (!(localStorage.getItem("Usuario") == null)){
-//     usuarioRegistrado = localStorage.getItem("Usuario");
-//     let div = document.querySelector(".form--login")
-//     const botonUsuario = document.createElement("button")
-//     botonUsuario.type = "button"
-//     botonUsuario.className = "botonLogin2 input--submit input"
-//     botonUsuario.innerText = "Ingresar como " + usuarioRegistrado
-//     div.appendChild(botonUsuario) 
-//     continuar(".botonLogin2")
-// }
-
 function carga() {
     const usuarioRegistrado = localStorage.getItem("Usuario") || null;
     if (usuarioRegistrado != null) {
