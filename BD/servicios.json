@@ -1,0 +1,20 @@
+[
+    {
+        "id" : 0,
+        "articulo": "Armado de Pc",
+        "precio": 1500,
+        "imagen": "img/ventiladores.jpg"
+    },
+    {
+        "id" : 1,
+        "articulo": "Limpieza completa",
+        "precio": 2000,
+        "imagen": "img/notebook2.jpg"
+    },
+    {
+        "id" : 2,
+        "articulo": "Desarrollo de pagina web",
+        "precio": 10000,
+        "imagen": "img/codigo4.jpg"
+    }
+]

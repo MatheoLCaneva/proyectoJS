@@ -1,109 +1,89 @@
-class servicio {
-    constructor(obj) {
-        this.id = obj.id;
-        this.articulo = obj.articulo;
-        this.precio = parseFloat(obj.precio);
-    }
-}
-
-
 let carrito = []
 let precioTotal = 0
+const btnMostrarCarrito = document.querySelector(".btnMostrarCarrito")
 
 
-let servicios = [{
-    id: 0,
-    articulo: "Armado de Pc",
-    precio: 1500
-}, {
-    id: 1,
-    articulo: "Limpieza completa",
-    precio: 2000
-}, {
-    id: 2,
-    articulo: "Desarrollo de pagina web",
-    precio: 10000
-}];
-console.log(servicios)
-
-function buscarProducto(id) {
-    let producto;
-    for (let i = 0; i < servicios.length; i++) {
-        if (id == servicios[i].id) {
-            producto = servicios[i];
-            break
-        }
-    }
-    return producto;
-}
 
 function agregarProductoCarrito(id) {
-    const producto = buscarProducto(id);
-    if (enCarrito(producto.id)) {
-        alert("El producto ya se encuentra en el carrito")
-    } else {
-        carrito.push(producto);
-        precioTotal += producto.precio;
-        localStorage.setItem("Articulos", JSON.stringify(carrito))
-        localStorage.setItem("PrecioTotal", precioTotal)
-        //Agrego el texto confirmando la operacion
-        agregarBoton(id)
-        eliminarProductoCarrito1("botonEliminar")
-        Swal.fire(
-            'El producto ' + producto.articulo + ' fue agregado con exito',
-            'Precio total: $' + precioTotal,
-            'success'
-        )
-
-    }
-
-}
-
-function eliminarProducto(id) {
-    const producto = buscarProducto(id);
-    if (enCarrito(producto.id)) {
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger'
-            },
-            buttonsStyling: false
-        })
-
-        swalWithBootstrapButtons.fire({
-            title: 'Estas seguro de eliminar ' + producto.articulo + '?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Aceptar',
-            cancelButtonText: 'Cancelar',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const indice = obtenerIndice(carrito, producto);
-                carrito.splice(indice, 1)
-                precioTotal -= producto.precio;
+    fetch('BD/servicios.json')
+        .then(respuesta => respuesta.json())
+        .then(productos => {
+            let item = productos.find((produc) => produc.id === id)
+            const serv = new servicio(item)
+            if (enCarrito(serv)) {
+                alert("esta")
+            } else {
+                carrito.push(serv)
+                precioTotal += serv.precio
                 localStorage.setItem("Articulos", JSON.stringify(carrito))
                 localStorage.setItem("PrecioTotal", precioTotal)
-                swalWithBootstrapButtons.fire(
-                    'Producto eliminado: ' + producto.articulo,
-                    'Articulos restantes: ' + carrito.length,
-                    'warning'
-                )
-                ocultarBoton(id)
-            } else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons.fire(
-                    'Eliminacion cancelada',
-                    'Total de articulos: ' + carrito.length, 
+                agregarBoton(id)
+                eliminarProductoCarrito1("botonEliminar")
+                Swal.fire(
+                    'El producto ' + serv.articulo + ' fue agregado con exito',
+                    'Precio total: $' + precioTotal,
                     'success'
                 )
             }
         })
+}
 
 
+
+// funcion para saber si un elemento esta en el carrito, la diseñe por errores que generaba el include
+function enCarrito(servicios) {
+    let pertenece = false;
+    for (const serv of carrito) {
+        let item = new servicio(serv)
+        if (item.id == servicios.id) {
+            pertenece = true;
+            break;
+        }
     }
+    return pertenece;
+}
+
+function eliminarProducto(id) {
+    let item = carrito.find((produc) => produc.id === id) 
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+    })
+
+    swalWithBootstrapButtons.fire({
+        title: 'Estas seguro de eliminar ' + item.articulo + '?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const indice = obtenerIndice(carrito, item);
+            carrito.splice(indice, 1)
+            precioTotal -= item.precio;
+            localStorage.setItem("Articulos", JSON.stringify(carrito))
+            localStorage.setItem("PrecioTotal", precioTotal)
+            swalWithBootstrapButtons.fire(
+                'Producto eliminado: ' + item.articulo,
+                'Articulos restantes: ' + carrito.length,
+                'warning'
+            )
+            ocultarBoton(id)
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Eliminacion cancelada',
+                'Total de articulos: ' + carrito.length,
+                'success'
+            )
+        }
+    })
 }
 
 function eliminarProductoCarrito1(array) {
@@ -139,17 +119,7 @@ function obtenerIndice(arr, objeto) {
     return indice;
 }
 
-// funcion para saber si un elemento esta en el carrito, la diseñe por errores que generaba el include
-function enCarrito(id) {
-    let pertenece = false;
-    const producto = buscarProducto(id)
-    for (let i = 0; i < carrito.length; i++) {
-        if (carrito[i].id == producto.id) {
-            pertenece = true;
-        }
-    }
-    return pertenece;
-}
+
 
 // funcion la cual los agrega anticipadamente para poder manipularlos
 function agregarBoton(id) {
@@ -206,11 +176,21 @@ function ocultarBoton(id) {
     }
 }
 
-function pagarCarrito() {
-    if (precioTotal == 0) {
-        console.log("Carrito vacio, agregue productos y reintente")
+btnMostrarCarrito.addEventListener('click', () => {
+    mostrarCarrito();
+});
+
+function mostrarCarrito() {
+    if (carrito.length == 0) {
+        btnConfirmarCompra.classList.add("disabled")
     } else {
-        console.log("Gracias por su compra, el total fue " + precioTotal)
+        btnConfirmarCompra.classList.remove("disabled")
+        bodyModal.innerHTML = '';
+        for (let producto of carrito) {
+            const prodMostrar = new servicio(producto)
+            prodMostrar.mostrarServicio();
+        }
+
     }
 }
 
@@ -234,17 +214,13 @@ function cargaPrincipal() {
         text: "Bienvenido " + localStorage.getItem("Usuario"),
         className: "info",
         duration: 3000,
-        close:true,
+        close: true,
         style: {
-          background: "linear-gradient(to right, #00b09b, #96c93d)",
+            background: "linear-gradient(to right, #00b09b, #96c93d)",
         }
-      }).showToast();
+    }).showToast();
 }
 
-let parrafoCarrito = document.createElement("p");
-parrafoCarrito.innerHTML = ""
-parrafoCarrito.className = "textoCarrito"
-document.body.appendChild(parrafoCarrito)
 
 cargaPrincipal()
 
@@ -265,10 +241,8 @@ boton1.onclick = () => {
 
 boton2.onclick = () => {
     agregarProductoCarrito(1)
-    mostrarBoton(1)
 }
 
 boton3.onclick = () => {
     agregarProductoCarrito(2)
-    mostrarBoton(2)
 }
