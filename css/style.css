@@ -614,6 +614,7 @@ button {
 .computers_section_2 {
     width: 100%;
     float: left;
+    margin-bottom: 20px;
 }
 
 .computer_main {
@@ -621,7 +622,6 @@ button {
     float: left;
     border: 1px solid #9fa0a1;
     padding: 50px 40px 50px 40px;
-    margin-top: 90px;
 }
 
 .computer_img {
@@ -1074,6 +1074,7 @@ button {
 .botones {
     display: flex;
     justify-content: space-between;
+    margin-top: 10px;
 }
 
 .botonVolver {

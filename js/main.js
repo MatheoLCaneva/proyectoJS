@@ -11,7 +11,16 @@ function agregarProductoCarrito(id) {
             let item = productos.find((produc) => produc.id === id)
             const serv = new servicio(item)
             if (enCarrito(serv)) {
-                alert("esta")
+                Toastify({
+                    text: `El producto -> ${serv.articulo} ya se encuentra en el carrito`,
+                    className: "info",
+                    position:"center",
+                    duration: 3000,
+                    close: true,
+                    style: {
+                        background: "gray",
+                    }
+                }).showToast();
             } else {
                 carrito.push(serv)
                 precioTotal += serv.precio
@@ -19,6 +28,7 @@ function agregarProductoCarrito(id) {
                 localStorage.setItem("PrecioTotal", precioTotal)
                 agregarBoton(id)
                 eliminarProductoCarrito1("botonEliminar")
+                sumarCarrito()
                 Swal.fire(
                     'El producto ' + serv.articulo + ' fue agregado con exito',
                     'Precio total: $' + precioTotal,
@@ -26,6 +36,7 @@ function agregarProductoCarrito(id) {
                 )
             }
         })
+    
 }
 
 
@@ -44,7 +55,7 @@ function enCarrito(servicios) {
 }
 
 function eliminarProducto(id) {
-    let item = carrito.find((produc) => produc.id === id) 
+    let item = carrito.find((produc) => produc.id === id)
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
             confirmButton: 'btn btn-success',
@@ -73,6 +84,7 @@ function eliminarProducto(id) {
                 'warning'
             )
             ocultarBoton(id)
+            sumarCarrito()
         } else if (
             /* Read more about handling dismissals below */
             result.dismiss === Swal.DismissReason.cancel
@@ -84,6 +96,16 @@ function eliminarProducto(id) {
             )
         }
     })
+    if (carrito.length == 0) {
+        bodyModal.innerHTML = ''
+    } else {
+        for (const objeto of carrito) {
+            bodyModal.innerHTML = ''
+            const serv = new servicio(objeto)
+            serv.mostrarServicio
+        }
+    }
+    
 }
 
 function eliminarProductoCarrito1(array) {
@@ -197,6 +219,7 @@ function mostrarCarrito() {
 function cargaPrincipal() {
     if (localStorage.getItem("Articulos") == null) {
         carrito = []
+        sumarCarrito()
 
     } else {
         const almacenados = JSON.parse(localStorage.getItem("Articulos"));
@@ -209,6 +232,7 @@ function cargaPrincipal() {
             eliminarProductoCarrito1("botonEliminar")
         }
         precioTotal = parseFloat(localStorage.getItem("PrecioTotal"))
+        sumarCarrito()
     }
     Toastify({
         text: "Bienvenido " + localStorage.getItem("Usuario"),

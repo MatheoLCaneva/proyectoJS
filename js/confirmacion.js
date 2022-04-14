@@ -16,4 +16,6 @@ btnConfirmarCompra.addEventListener('click', ()=>{
     localStorage.removeItem("Articulos")
     localStorage.removeItem("PrecioTotal")
     $('#mostrarCarro').modal('hide')
+    bodyModal.innerHTML=''
+    cantCarrito.innerHTML = '0'
 })

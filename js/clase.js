@@ -13,9 +13,9 @@ class servicio {
         rowCarrito.classList.add("row", "mt-2")
         rowCarrito.innerHTML = `<div class="col-12 col-lg-3 ">                                      
         <img src="${this.imagen}" class="card-img-top w-75 img-thumbnail " alt="...">
-     </div> <div class="col-10 col-lg-7 d-flex flex-column justify-content-center">   
+        </div> <div class="col-10 col-lg-7 d-flex flex-column justify-content-center">   
         <h4 class="card-title " id="categoria"> ${this.articulo} --- $${this.precio}</h4>                    
-     </div>`
-      bodyModal.appendChild(rowCarrito);
+        </div>`
+        bodyModal.appendChild(rowCarrito);
     }
 }
