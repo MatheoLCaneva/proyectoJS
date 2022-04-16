@@ -1,7 +1,7 @@
 let carrito = []
 let precioTotal = 0
 const btnMostrarCarrito = document.querySelector(".btnMostrarCarrito")
-
+const totalCompra = document.querySelector("#totalModal")
 
 
 function agregarProductoCarrito(id) {
@@ -212,8 +212,8 @@ function mostrarCarrito() {
             const prodMostrar = new servicio(producto)
             prodMostrar.mostrarServicio();
         }
-
     }
+    totalCompra.innerHTML = `Total: $${precioTotal}`
 }
 
 function cargaPrincipal() {
