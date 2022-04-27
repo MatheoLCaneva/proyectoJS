@@ -1,0 +1,18 @@
+[
+    {
+        "id" : 0,
+        "total" : 3500,
+        "articulos" : ["Armado de Pc", "Limpieza completa"]
+    },
+    
+    {
+        "id" :1,
+        "total" : 13500,
+        "articulos" : ["Desarrollo de página web" , "Armado de Pc" , "Limpieza completa"]
+    },
+    {
+        "id" : 2,
+        "total" : 11500,
+        "articulos" : ["Armado de Pc", "Desarrollo de página web"]
+    }
+]

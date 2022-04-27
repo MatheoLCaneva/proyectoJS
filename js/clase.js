@@ -19,3 +19,11 @@ class servicio {
         bodyModal.appendChild(rowCarrito);
     }
 }
+
+class venta {
+    constructor(obj) {
+        this.id = obj.id;
+        this.total = obj.total;
+        this.articulos = obj.articulos;
+    }
+}
