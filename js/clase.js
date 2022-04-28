@@ -1,5 +1,5 @@
 const bodyModal = document.querySelector(".modal-body")
-
+const bodyModalVentas = document.querySelector(".body-modal-ventas")
 class servicio {
     constructor(obj) {
         this.id = obj.id;
@@ -25,5 +25,6 @@ class venta {
         this.id = obj.id;
         this.total = obj.total;
         this.articulos = obj.articulos;
+        this.comprador = obj.comprador
     }
 }

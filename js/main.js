@@ -245,7 +245,7 @@ function cargaPrincipal() {
     }).showToast();
 }
 
-
+cargarVentas()
 cargaPrincipal()
 
 //Gestiono cuando se pulsa el boton agregar

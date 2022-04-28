@@ -1,17 +1,30 @@
 const botonVentas = document.querySelector(".btnMostrarVentas")
+let listaVentas = []
+
 
 botonVentas.onclick = () => {
-    // mostrarVentas();
+    bodyModalVentas.innerHTML='hola';
+
 }
 
-const listaVentas = () => {
-    const lista = [1,2,3,4]
-    return lista
-}
+function cargarVentas() {
+    if (localStorage.getItem("Ventas") == null) {
+        fetch('BD/ventas.json')
+            .then(respuesta => respuesta.json())
+            .then(ventas => {
+                for (let itemVenta of ventas) {
+                    const ventaItem = new venta(itemVenta)
+                    listaVentas.push(ventaItem);
+                }
+                localStorage.setItem("Ventas", JSON.stringify(listaVentas))
+            })
 
-// function mostrarVentas(){
-//     const listVentas = 
-// }
-
-
-console.log(listaVentas())
+    } else {
+        const almacenados = JSON.parse(localStorage.getItem("Ventas"));
+        listaVentas = []
+        for (const objeto of almacenados) {
+            listaVentas.push(objeto);
+            console.log(objeto.total)
+        }
+    }
+}  
