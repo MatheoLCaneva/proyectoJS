@@ -1099,3 +1099,7 @@ button {
 .botonEs{
     display: flex;
 }
+
+.bordesModalVentas{
+    border-bottom: 1px solid #dee2e6
+}

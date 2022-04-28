@@ -1,9 +1,15 @@
 const botonVentas = document.querySelector(".btnMostrarVentas")
+const bodyModalVentas = document.querySelector(".modal-body-ventas")
 let listaVentas = []
 
 
 botonVentas.onclick = () => {
-    bodyModalVentas.innerHTML='hola';
+    bodyModalVentas.innerHTML='';
+    const almacenados = JSON.parse(localStorage.getItem("Ventas"));
+    for (let itemVenta of almacenados) {
+        const ventaMostrar = new venta(itemVenta)
+        ventaMostrar.mostrarVenta()
+    }
 
 }
 
