@@ -1100,6 +1100,10 @@ button {
     display: flex;
 }
 
+.btnMostrarVentas{
+    margin-right: 40px;
+}
+
 .bordesModalVentas{
     border-bottom: 1px solid #dee2e6
 }
