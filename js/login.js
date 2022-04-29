@@ -6,7 +6,7 @@ function carga() {
                 confirmButton: 'btn btn-success',
                 cancelButton: 'btn btn-danger'
             },
-            buttonsStyling: false
+            buttonsStyling: true
         })
 
         swalWithBootstrapButtons.fire({
@@ -18,10 +18,7 @@ function carga() {
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-            } else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
                 location.href = "./menu.html"
             }
         })
@@ -29,18 +26,14 @@ function carga() {
 
 }
 
-
-function continuar(variable) {
-    const botonContinuar = document.querySelector(variable)
-    botonContinuar.onclick = () => {
-        location.href = "./menu.html"
-    }
-}
-
-let botonazo = document.querySelector(".botonLogin")
-botonazo.onclick = () => {
+let botonLogin = document.querySelector(".botonLogin")
+botonLogin.onclick = () => {
     usuarioRegistrado = document.getElementById("usuarioLogin").value;
+    
     localStorage.setItem("Usuario", usuarioRegistrado)
+
+    if (localStorage.getItem("Articulos") != null){ localStorage.removeItem("Articulos") } 
+
     location.href = "./menu.html"
 }
 
