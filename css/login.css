@@ -45,7 +45,7 @@ html, body {
       outline: none;
     }
     .input--top {
-      border-radius: 0.5rem 0.5rem 0 0;
+      margin-top: 1px;
       border-top: 0;
     }
     .input--submit {
@@ -107,11 +107,14 @@ html, body {
   .botonLogin{
       width: 100%;
       padding: 0;
+      margin-top: 2px;
   }
 
   .botonLogin2{
       margin-top: 5px;
   }
+
+
 
   
   #toggle--login:checked ~ .form--signup { left:200%; visibility:hidden; }

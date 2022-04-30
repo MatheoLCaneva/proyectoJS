@@ -54,6 +54,8 @@ function enCarrito(servicios) {
     return pertenece;
 }
 
+// validacion de eliminacion de producto
+
 function eliminarProducto(id) {
     let item = carrito.find((produc) => produc.id === id)
     const swalWithBootstrapButtons = Swal.mixin({

@@ -9,6 +9,7 @@ class servicio {
         this.imagen = obj.imagen;
     }
 
+    // mostrar servicio en el carrito con el modal
     mostrarServicio() {
         const rowCarrito = document.createElement("div")
         rowCarrito.classList.add("row", "mt-2")
@@ -28,7 +29,7 @@ class venta {
         this.articulos = obj.articulos;
         this.comprador = obj.comprador
     }   
-
+// mostrar venta en modal de ultimas ventas
     mostrarVenta() {
         const rowCarrito = document.createElement("div")
         rowCarrito.classList.add("row", "mt-2", "bordesModalVentas")

@@ -12,7 +12,7 @@ botonVentas.onclick = () => {
     }
 
 }
-
+// extraigo ventas del json para almacenarlas al estilo base de datos
 function cargarVentas() {
     if (localStorage.getItem("Ventas") == null) {
         fetch('BD/ventas.json')
