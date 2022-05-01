@@ -24,19 +24,36 @@ function carga() {
     }
 
 }
-
 let botonLogin = document.querySelector(".botonLogin")
+botonLogin.classList.add("disabled")
+let usuarioRegistrado = document.getElementById("usuarioLogin");
+let mailUsuario = document.getElementById("emailLogin");
 
-// evento de escucha en click o enter para realizar el guardado de datos
+//verifico al momento que cambia el input, que los datos ingresados sean validos
 
-botonLogin.addEventListener('click', () => {
-    usuarioRegistrado = document.getElementById("usuarioLogin").value;
-    const mailUsuario = document.getElementById("emailLogin").value;
-    localStorage.setItem("Usuario", usuarioRegistrado)
-    localStorage.setItem("email", mailUsuario)
-    if (localStorage.getItem("Articulos") != null) {
-        localStorage.removeItem("Articulos")
+mailUsuario.addEventListener('change', habilitarBoton);
+usuarioRegistrado.addEventListener('change', habilitarBoton)
+
+function habilitarBoton() {
+    if ((mailUsuario.value.includes(".com") && usuarioRegistrado.value != "")) {
+        botonLogin.classList.remove("disabled")
+        botonLogin.addEventListener('click', () => {
+
+            localStorage.setItem("Usuario", usuarioRegistrado.value)
+            localStorage.setItem("email", mailUsuario.value)
+            if (localStorage.getItem("Articulos") != null) {
+                localStorage.removeItem("Articulos")
+            }
+
+            location.href = './menu.html'
+        })
+    } else {
+        botonLogin.classList.add("disabled")
     }
-})
+}
+
+
+
+
 
 carga()
