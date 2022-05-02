@@ -137,6 +137,12 @@ function mostrarCarrito() {
 //carga Principal con datos almacenados
 
 function cargaPrincipal() {
+    if (localStorage.getItem("PrecioTotal" )!= null){
+        precioTotal = parseFloat(localStorage.getItem("PrecioTotal"))
+    }else{
+        precioTotal = 0
+    }
+    
     fetch('BD/servicios.json')
         .then(respuesta => respuesta.json())
         .then(servs => {
@@ -159,7 +165,6 @@ function cargaPrincipal() {
             carrito.push(objeto);
         }
     }
-    precioTotal = parseFloat(localStorage.getItem("PrecioTotal"))
     sumarCarrito()
 }
 Toastify({
@@ -174,3 +179,8 @@ Toastify({
 
 cargarVentas()
 cargaPrincipal()
+
+const btnVolver = document.querySelector(".botonVolver")
+btnVolver.onclick = () => {
+    location.href = "./index.html"
+}
