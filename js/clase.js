@@ -17,8 +17,14 @@ class servicio {
         <img src="${this.imagen}" class="card-img-top w-75 img-thumbnail " alt="...">
         </div> <div class="col-10 col-lg-7 d-flex flex-column justify-content-center">   
         <h4 class="card-title " id="categoria"> ${this.articulo} --- $${this.precio}</h4>                    
-        </div>`
+        </div>
+        <div class="col-1"> <i class="fa-solid fa-trash btnEliminar" id = "${this.id}"></i> </div>`
         bodyModal.appendChild(rowCarrito);
+
+        const btnEliminarProducto = document.getElementById(this.id)
+        btnEliminarProducto.addEventListener('click', () => {
+            eliminarProducto(this.id)
+        })
     }
 }
 

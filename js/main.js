@@ -4,42 +4,32 @@ const btnMostrarCarrito = document.querySelector(".btnMostrarCarrito")
 const totalCompra = document.querySelector("#totalModal")
 
 
-function agregarProductoCarrito(id) {
-    fetch('BD/servicios.json')
-        .then(respuesta => respuesta.json())
-        .then(productos => {
-            let item = productos.find((produc) => produc.id === id)
-            const serv = new servicio(item)
-            if (enCarrito(serv)) {
-                Toastify({
-                    text: `El producto -> ${serv.articulo} ya se encuentra en el carrito`,
-                    className: "info",
-                    position:"center",
-                    duration: 3000,
-                    close: true,
-                    style: {
-                        background: "gray",
-                    }
-                }).showToast();
-            } else {
-                carrito.push(serv)
-                precioTotal += serv.precio
-                localStorage.setItem("Articulos", JSON.stringify(carrito))
-                localStorage.setItem("PrecioTotal", precioTotal)
-                agregarBoton(id)
-                eliminarProductoCarrito1("botonEliminar")
-                sumarCarrito()
-                Swal.fire(
-                    'El producto ' + serv.articulo + ' fue agregado con exito',
-                    'Precio total: $' + precioTotal,
-                    'success'
-                )
+function agregarProductoCarrito(servicio) {
+    if (enCarrito(servicio)) {
+        Toastify({
+            text: `El producto -> ${servicio.articulo} ya se encuentra en el carrito`,
+            className: "info",
+            position: "center",
+            duration: 3000,
+            close: true,
+            style: {
+                background: "gray",
             }
-        })
-    
+        }).showToast();
+    } else {
+        carrito.push(servicio)
+        precioTotal += servicio.precio
+        localStorage.setItem("Articulos", JSON.stringify(carrito))
+        localStorage.setItem("PrecioTotal", precioTotal)
+        sumarCarrito()
+        Swal.fire(
+            'El producto ' + servicio.articulo + ' fue agregado con exito',
+            'Precio total: $' + precioTotal,
+            'success'
+        )
+    }
+
 }
-
-
 
 // funcion para saber si un elemento esta en el carrito, la diseñe por errores que generaba el include
 function enCarrito(servicios) {
@@ -85,8 +75,18 @@ function eliminarProducto(id) {
                 'Articulos restantes: ' + carrito.length,
                 'warning'
             )
-            ocultarBoton(id)
+            if (carrito.length == 0) {
+                bodyModal.innerHTML = ''
+            } else {
+                for (const objeto of carrito) {
+                    bodyModal.innerHTML = ''
+                    const serv = new servicio(objeto)
+                    serv.mostrarServicio()
+                }
+            }
             sumarCarrito()
+            const totalCarrito = document.querySelector("#totalModal")
+            totalCarrito.innerHTML = `$${precioTotal}`
         } else if (
             /* Read more about handling dismissals below */
             result.dismiss === Swal.DismissReason.cancel
@@ -98,37 +98,8 @@ function eliminarProducto(id) {
             )
         }
     })
-    if (carrito.length == 0) {
-        bodyModal.innerHTML = ''
-    } else {
-        for (const objeto of carrito) {
-            bodyModal.innerHTML = ''
-            const serv = new servicio(objeto)
-            serv.mostrarServicio
-        }
-    }
-    
-}
 
-function eliminarProductoCarrito1(array) {
-    const botonesEliminar = [...document.getElementsByClassName(array)];
-    for (const boton of botonesEliminar) {
-        boton.onclick = () => {
-            if (tieneID(boton) && boton.id == "eliminarBoton0") {
-                eliminarProducto(0)
-            }
-            if (tieneID(boton) && boton.id == "eliminarBoton1") {
-                eliminarProducto(1)
-            }
-            if (tieneID(boton) && boton.id == "eliminarBoton2") {
-                eliminarProducto(2)
-            }
-        }
-    }
-}
 
-function tieneID(elemento) {
-    return typeof elemento.id != "undefined";
 }
 
 // devuelve indice de un objeto en el Array, la hice porque indexOf me generaba error
@@ -143,66 +114,11 @@ function obtenerIndice(arr, objeto) {
     return indice;
 }
 
-
-
-// funcion la cual los agrega anticipadamente para poder manipularlos
-function agregarBoton(id) {
-    if (id == 0) {
-        let a = document.querySelector(".primerProducto")
-        let p = document.createElement("button");
-        p.innerHTML = " Eliminar"
-        p.className = "botonEliminar botonEliminarPrimero noMostrar"
-        p.id = "eliminarBoton0"
-        a.append(p)
-    } else if (id == 1) {
-        let a = document.querySelector(".segundoProducto")
-        let p = document.createElement("button");
-        p.innerHTML = " Eliminar"
-        p.className = "botonEliminar botonEliminarSegundo noMostrar"
-        p.id = "eliminarBoton1"
-        a.append(p)
-    } else if (id == 2) {
-        let a = document.querySelector(".tercerProducto")
-        let p = document.createElement("button");
-        p.innerHTML = " Eliminar"
-        p.className = "botonEliminar botonEliminarTercero noMostrar"
-        p.id = "eliminarBoton2"
-        a.append(p)
-    }
-    mostrarBoton(id)
-}
-
-// funcion para mostrar los botones de eliminar
-function mostrarBoton(id) {
-    if (id == 0) {
-        let boton = document.querySelector("#eliminarBoton0")
-        boton.className = "botonEliminar botonEliminarPrimero"
-    } else if (id == 1) {
-        let boton = document.querySelector("#eliminarBoton1")
-        boton.className = "botonEliminar botonEliminarSegundo"
-    } else if (id == 2) {
-        let boton = document.querySelector("#eliminarBoton2")
-        boton.className = "botonEliminar botonEliminarTercero"
-    }
-}
-
-// funcion la cual genera que se oculten los botones de eliminar cuando se pulsan
-function ocultarBoton(id) {
-    if (id == 0) {
-        let boton = document.querySelector(".botonEliminarPrimero")
-        boton.className = "botonEliminar botonEliminarPrimero noMostrar"
-    } else if (id == 1) {
-        let boton = document.querySelector(".botonEliminarSegundo")
-        boton.className = "botonEliminar botonEliminarSegundo noMostrar"
-    } else if (id == 2) {
-        let boton = document.querySelector(".botonEliminarTercero")
-        boton.className = "botonEliminar botonEliminarTercero noMostrar"
-    }
-}
-
 btnMostrarCarrito.addEventListener('click', () => {
     mostrarCarrito();
 });
+
+//Muestro modal de carrito
 
 function mostrarCarrito() {
     if (carrito.length == 0) {
@@ -218,7 +134,20 @@ function mostrarCarrito() {
     totalCompra.innerHTML = `Total: $${precioTotal}`
 }
 
+//carga Principal con datos almacenados
+
 function cargaPrincipal() {
+    fetch('BD/servicios.json')
+        .then(respuesta => respuesta.json())
+        .then(servs => {
+            for (let servicioItem of servs) {
+                const itemServicio = new servicio(servicioItem)
+                const btnAgregar = document.getElementById(`agregar${itemServicio.id}`)
+                btnAgregar.addEventListener('click', () => {
+                    agregarProductoCarrito(itemServicio)
+                })
+            }
+        })
     if (localStorage.getItem("Articulos") == null) {
         carrito = []
         sumarCarrito()
@@ -228,47 +157,20 @@ function cargaPrincipal() {
         carrito = []
         for (const objeto of almacenados) {
             carrito.push(objeto);
-            console.log(objeto.id)
-            let obj = new servicio(objeto)
-            agregarBoton(obj.id)
-            eliminarProductoCarrito1("botonEliminar")
         }
-        precioTotal = parseFloat(localStorage.getItem("PrecioTotal"))
-        sumarCarrito()
     }
-    Toastify({
-        text: "Bienvenido " + localStorage.getItem("Usuario"),
-        className: "info",
-        duration: 3000,
-        close: true,
-        style: {
-            background: "linear-gradient(to right, #00b09b, #96c93d)",
-        }
-    }).showToast();
+    precioTotal = parseFloat(localStorage.getItem("PrecioTotal"))
+    sumarCarrito()
 }
+Toastify({
+    text: "Bienvenido " + localStorage.getItem("Usuario"),
+    className: "info",
+    duration: 3000,
+    close: true,
+    style: {
+        background: "linear-gradient(to right, #00b09b, #96c93d)",
+    }
+}).showToast();
 
 cargarVentas()
 cargaPrincipal()
-
-//Gestiono cuando se pulsa el boton agregar
-
-let boton1 = document.querySelector(".tipo1");
-let boton2 = document.querySelector(".tipo2");
-let boton3 = document.querySelector(".tipo3");
-let botonVolver = document.querySelector(".botonVolver")
-
-botonVolver.onclick = () => {
-    location.href = "./index.html"
-}
-
-boton1.onclick = () => {
-    agregarProductoCarrito(0)
-}
-
-boton2.onclick = () => {
-    agregarProductoCarrito(1)
-}
-
-boton3.onclick = () => {
-    agregarProductoCarrito(2)
-}

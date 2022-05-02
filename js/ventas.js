@@ -30,7 +30,6 @@ function cargarVentas() {
         listaVentas = []
         for (const objeto of almacenados) {
             listaVentas.push(objeto);
-            console.log(objeto.total)
         }
     }
 }  

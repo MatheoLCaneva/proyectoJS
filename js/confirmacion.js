@@ -13,7 +13,6 @@ btnConfirmarCompra.addEventListener('click', ()=>{
     
     for (const prod of carrito){
         let serv = new servicio(prod);
-        ocultarBoton(serv.id)
         ListadoServicios.push(serv.articulo)
     }
 

@@ -1090,3 +1090,9 @@ button {
 .bordesModalVentas{
     border-bottom: 1px solid #dee2e6
 }
+
+.btnEliminar{
+        cursor: pointer;
+    font-size: 30px;
+    color: #ff5d68;
+}
