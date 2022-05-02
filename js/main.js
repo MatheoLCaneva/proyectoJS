@@ -75,11 +75,12 @@ function eliminarProducto(id) {
                 'Articulos restantes: ' + carrito.length,
                 'warning'
             )
+            bodyModal.innerHTML = ''
             if (carrito.length == 0) {
                 bodyModal.innerHTML = ''
             } else {
                 for (const objeto of carrito) {
-                    bodyModal.innerHTML = ''
+                    
                     const serv = new servicio(objeto)
                     serv.mostrarServicio()
                 }
